@@ -1,0 +1,17 @@
+name: Push Dashboard Export
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # every 30 minutes
+  workflow_dispatch:
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy export
+        run: |
+          git config user.email "bot@fusic.verse"
+          git config user.name "FusicBot"
+          git add data/dashboard_export.json || true
+          git diff --staged --quiet || git commit -m "📊 Update dashboard export"
+          git push
